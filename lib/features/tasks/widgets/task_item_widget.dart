@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:todo_app/core/setting_provider.dart';
+import 'package:todo_app/model/task_model.dart';
 
 class TaskItemWidget extends StatelessWidget {
-  const TaskItemWidget({super.key});
+  final TaskModel taskModel;
+  const TaskItemWidget({super.key, required this.taskModel});
 
   @override
   Widget build(BuildContext context) {
@@ -13,7 +16,7 @@ class TaskItemWidget extends StatelessWidget {
 
     return Container(
       margin: EdgeInsets.symmetric(horizontal: 15, vertical: 10),
-      padding: EdgeInsets.symmetric(horizontal: 10, vertical: 25),
+      padding: EdgeInsets.symmetric(horizontal: 10, vertical: 15),
       decoration: BoxDecoration(
         color: provider.isDark() ? Color(0xFF141922) : Colors.white,
         borderRadius: BorderRadius.circular(15.0),
@@ -31,10 +34,19 @@ class TaskItemWidget extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              'Play Basket Ball',
+              taskModel.title,
               style: theme.textTheme.titleLarge?.copyWith(
                 color: theme.primaryColor,
                 fontSize: 18,
+              ),
+            ),
+            SizedBox(height: 6),
+            Text(
+              taskModel.detail,
+              style: theme.textTheme.titleLarge?.copyWith(
+                color: Colors.black,
+                fontSize: 14,
+                fontWeight: FontWeight(500),
               ),
             ),
             SizedBox(height: 6),
@@ -47,11 +59,15 @@ class TaskItemWidget extends StatelessWidget {
                 ),
                 SizedBox(width: 5),
                 Text(
-                  ' 10 : 30 AM ',
+                  DateFormat('dd MMM yyyy', provider.currentLanguage).format(
+                    DateTime.fromMillisecondsSinceEpoch(
+                      taskModel.selectedDate.millisecondsSinceEpoch,
+                    ),
+                  ),
                   style: theme.textTheme.titleLarge?.copyWith(
                     color: provider.isDark() ? Colors.white : Colors.black,
                     fontSize: 12,
-                    fontWeight: FontWeight(500),
+                    fontWeight: FontWeight.w500,
                   ),
                 ),
               ],

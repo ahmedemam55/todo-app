@@ -1,8 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
+import 'package:todo_app/core/firebase_utils.dart';
+import 'package:todo_app/core/services/snack_bar_services.dart';
 import 'package:todo_app/core/setting_provider.dart';
 import 'package:todo_app/l10n/app_localizations.dart';
+import 'package:todo_app/model/task_model.dart';
 
 class AddTaskBottomSheet extends StatefulWidget {
   const AddTaskBottomSheet({super.key});
@@ -12,8 +16,9 @@ class AddTaskBottomSheet extends StatefulWidget {
 }
 
 class _AddTaskBottomSheetState extends State<AddTaskBottomSheet> {
+  final _formKey = GlobalKey<FormState>();
   var titleController = TextEditingController();
-  var descriptionController = TextEditingController();
+  var detailController = TextEditingController();
   DateTime selecteDate = DateTime.now();
   late SettingProvider provider;
 
@@ -34,88 +39,109 @@ class _AddTaskBottomSheetState extends State<AddTaskBottomSheet> {
         color: provider.isDark() ? const Color(0xFF141922) : Colors.white,
         borderRadius: BorderRadius.circular(15.0),
       ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          Text(
-            lang.add_new_task,
-            style: theme.textTheme.bodyLarge?.copyWith(
-              color: provider.isDark() ? Colors.white : Colors.black,
-            ),
-            textAlign: TextAlign.center,
-          ),
-          const SizedBox(height: 20),
-          TextFormField(
-            controller: titleController,
-            decoration: InputDecoration(
-              hintText: lang.enter_your_task_title,
-              hintStyle: TextStyle(
-                color: provider.isDark()
-                    ? Colors.white.withOpacity(0.6)
-                    : Colors.black.withOpacity(0.6),
+      child: Form(
+        key: _formKey,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            Text(
+              lang.add_new_task,
+              style: theme.textTheme.bodyLarge?.copyWith(
+                color: provider.isDark() ? Colors.white : Colors.black,
               ),
+              textAlign: TextAlign.center,
             ),
-            validator: (value) {
-              if (value == null || value.trim().isEmpty) {
-                return "please enter task title";
-              }
-              return null;
-            },
-          ),
-          const SizedBox(height: 20),
-          TextFormField(
-            controller: descriptionController,
-            maxLines: 3,
-            decoration: InputDecoration(
-              hintText: lang.enter_your_task_details,
-              hintStyle: TextStyle(
-                color: provider.isDark()
-                    ? Colors.white.withOpacity(0.6)
-                    : Colors.black.withOpacity(0.6),
+            const SizedBox(height: 20),
+            TextFormField(
+              controller: titleController,
+              decoration: InputDecoration(
+                hintText: lang.enter_your_task_title,
+                hintStyle: TextStyle(
+                  color: provider.isDark()
+                      ? Colors.white.withOpacity(0.6)
+                      : Colors.black.withOpacity(0.6),
+                ),
               ),
+              validator: (value) {
+                if (value == null || value.trim().isEmpty) {
+                  return "please enter task title";
+                }
+                return null;
+              },
             ),
-            validator: (value) {
-              if (value == null || value.trim().isEmpty) {
-                return "please enter task Details";
-              }
-              return null;
-            },
-          ),
-          const SizedBox(height: 20),
-          Text(
-            lang.select_time,
-            style: theme.textTheme.bodyLarge?.copyWith(
-              color: provider.isDark() ? Colors.white : Colors.black,
-              fontWeight: FontWeight.w500,
+            const SizedBox(height: 20),
+            TextFormField(
+              controller: detailController,
+              maxLines: 3,
+              decoration: InputDecoration(
+                hintText: lang.enter_your_task_details,
+                hintStyle: TextStyle(
+                  color: provider.isDark()
+                      ? Colors.white.withOpacity(0.6)
+                      : Colors.black.withOpacity(0.6),
+                ),
+              ),
+              validator: (value) {
+                if (value == null || value.trim().isEmpty) {
+                  return "please enter task Details";
+                }
+                return null;
+              },
             ),
-          ),
-          const SizedBox(height: 10),
-          InkWell(
-            onTap: getSelectedDate,
-            child: Text(
-              DateFormat(
-                "dd MMM yyyy",
-                provider.currentLanguage,
-              ).format(selecteDate),
+            const SizedBox(height: 20),
+            Text(
+              lang.select_time,
               style: theme.textTheme.bodyLarge?.copyWith(
                 color: provider.isDark() ? Colors.white : Colors.black,
                 fontWeight: FontWeight.w500,
               ),
-              textAlign: TextAlign.center,
             ),
-          ),
-          const Spacer(),
-          FilledButton(
-            onPressed: () {},
-            style: FilledButton.styleFrom(backgroundColor: theme.primaryColor),
-            child: Text(
-              lang.save,
-              style: theme.textTheme.bodyMedium?.copyWith(
-                color: provider.isDark() ? Colors.white : Colors.black,
+            const SizedBox(height: 10),
+            InkWell(
+              onTap: getSelectedDate,
+              child: Text(
+                DateFormat(
+                  "dd MMM yyyy",
+                  provider.currentLanguage,
+                ).format(selecteDate),
+                style: theme.textTheme.bodyLarge?.copyWith(
+                  color: provider.isDark() ? Colors.white : Colors.black,
+                  fontWeight: FontWeight.w500,
+                ),
+                textAlign: TextAlign.center,
               ),
             ),
-          ),
-        ],
+            const Spacer(),
+            FilledButton(
+              onPressed: () {
+                if (_formKey.currentState!.validate()) {
+                  var taskModel = TaskModel(
+                    title: titleController.text,
+                    detail: detailController.text,
+                    selectedDate: selecteDate,
+                  );
+                  EasyLoading.show();
+                  FirebaseUtils.addTaskToFirebase(taskModel).then((value) {
+                    Navigator.pop(context);
+                    EasyLoading.dismiss();
+                    SnackBarServices.showSuccessMessage(
+                      'Task successfully added!',
+                    );
+                  });
+                }
+              },
+              style: FilledButton.styleFrom(
+                backgroundColor: theme.primaryColor,
+              ),
+              child: Text(
+                lang.save,
+                style: theme.textTheme.bodyMedium?.copyWith(
+                  color: provider.isDark() ? Colors.white : Colors.black,
+                ),
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }

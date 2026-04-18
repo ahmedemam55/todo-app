@@ -1,9 +1,11 @@
 import 'package:easy_date_timeline/easy_date_timeline.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:todo_app/core/firebase_utils.dart';
 import 'package:todo_app/core/setting_provider.dart';
 import 'package:todo_app/features/tasks/widgets/task_item_widget.dart';
 import 'package:todo_app/l10n/app_localizations.dart';
+import 'package:todo_app/model/task_model.dart';
 
 class TasksView extends StatefulWidget {
   const TasksView({super.key});
@@ -24,6 +26,7 @@ class _TasksViewState extends State<TasksView> {
 
     return Column(
       children: [
+        // ── Header + Date Timeline ───────────────────────────────────────
         Padding(
           padding: const EdgeInsets.only(bottom: 40.0),
           child: Stack(
@@ -38,7 +41,9 @@ class _TasksViewState extends State<TasksView> {
                   lang.to_do_list,
                   style: theme.textTheme.titleLarge?.copyWith(
                     fontSize: 22,
-                    color: provider.isDark() ? Color(0xFF060E1E) : Colors.white,
+                    color: provider.isDark()
+                        ? const Color(0xFF060E1E)
+                        : Colors.white,
                   ),
                 ),
               ),
@@ -50,19 +55,19 @@ class _TasksViewState extends State<TasksView> {
                   locale: provider.currentLanguage,
                   firstDate: DateTime(2026),
                   focusDate: _focusDate,
-                  lastDate: DateTime.now().add(Duration(days: 365)),
+                  lastDate: DateTime.now().add(const Duration(days: 365)),
                   onDateChange: (selectedDate) {
                     setState(() {
                       _focusDate = selectedDate;
                     });
                   },
                   showTimelineHeader: false,
-                  timeLineProps: EasyTimeLineProps(separatorPadding: 10),
+                  timeLineProps: const EasyTimeLineProps(separatorPadding: 10),
                   dayProps: EasyDayProps(
                     activeDayStyle: DayStyle(
                       decoration: BoxDecoration(
                         color: provider.isDark()
-                            ? Color(0xFF141922)
+                            ? const Color(0xFF141922)
                             : Colors.white,
                         borderRadius: BorderRadius.circular(12.0),
                       ),
@@ -82,7 +87,7 @@ class _TasksViewState extends State<TasksView> {
                     inactiveDayStyle: DayStyle(
                       decoration: BoxDecoration(
                         color: provider.isDark()
-                            ? Color(0xFF141922).withOpacity(0.8)
+                            ? const Color(0xFF141922).withOpacity(0.8)
                             : Colors.white.withOpacity(0.8),
                         borderRadius: BorderRadius.circular(12.0),
                       ),
@@ -129,10 +134,35 @@ class _TasksViewState extends State<TasksView> {
             ],
           ),
         ),
+
+        // ── Tasks List ───────────────────────────────────────────────────
         Expanded(
-          child: ListView.builder(
-            itemBuilder: (context, index) => TaskItemWidget(),
-            itemCount: 3,
+          child: StreamBuilder<List<TaskModel>>(
+            stream: FirebaseUtils.getTasksStream(_focusDate), // ✅ مرّر اليوم
+            builder: (context, snapshot) {
+              if (snapshot.hasError) {
+                return const Center(child: Text("Something went wrong"));
+              }
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return Center(
+                  child: CircularProgressIndicator(color: theme.primaryColor),
+                );
+              }
+              var tasksList = snapshot.data ?? [];
+              if (tasksList.isEmpty) {
+                return Center(
+                  child: Text(
+                    'No tasks yet!',
+                    style: theme.textTheme.bodyLarge,
+                  ),
+                );
+              }
+              return ListView.builder(
+                itemCount: tasksList.length,
+                itemBuilder: (context, index) =>
+                    TaskItemWidget(taskModel: tasksList[index]),
+              );
+            },
           ),
         ),
       ],
