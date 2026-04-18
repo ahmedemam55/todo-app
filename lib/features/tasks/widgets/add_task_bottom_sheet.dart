@@ -1,4 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
+import 'package:provider/provider.dart';
+import 'package:todo_app/core/setting_provider.dart';
+import 'package:todo_app/l10n/app_localizations.dart';
 
 class AddTaskBottomSheet extends StatefulWidget {
   const AddTaskBottomSheet({super.key});
@@ -10,28 +14,47 @@ class AddTaskBottomSheet extends StatefulWidget {
 class _AddTaskBottomSheetState extends State<AddTaskBottomSheet> {
   var titleController = TextEditingController();
   var descriptionController = TextEditingController();
+  DateTime selecteDate = DateTime.now();
+  late SettingProvider provider;
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    provider = Provider.of<SettingProvider>(context);
+  }
 
   @override
   Widget build(BuildContext context) {
     var theme = Theme.of(context);
+    var lang = AppLocalizations.of(context)!;
+
     return Container(
-      padding: EdgeInsets.all(20),
+      padding: const EdgeInsets.all(20),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: provider.isDark() ? const Color(0xFF141922) : Colors.white,
         borderRadius: BorderRadius.circular(15.0),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           Text(
-            "Add New Task",
-            style: theme.textTheme.bodyLarge?.copyWith(color: Colors.black),
+            lang.add_new_task,
+            style: theme.textTheme.bodyLarge?.copyWith(
+              color: provider.isDark() ? Colors.white : Colors.black,
+            ),
             textAlign: TextAlign.center,
           ),
-          const SizedBox(height: 50),
+          const SizedBox(height: 20),
           TextFormField(
             controller: titleController,
-            decoration: InputDecoration(hintText: "Enter Task Title"),
+            decoration: InputDecoration(
+              hintText: lang.enter_your_task_title,
+              hintStyle: TextStyle(
+                color: provider.isDark()
+                    ? Colors.white.withOpacity(0.6)
+                    : Colors.black.withOpacity(0.6),
+              ),
+            ),
             validator: (value) {
               if (value == null || value.trim().isEmpty) {
                 return "please enter task title";
@@ -43,43 +66,71 @@ class _AddTaskBottomSheetState extends State<AddTaskBottomSheet> {
           TextFormField(
             controller: descriptionController,
             maxLines: 3,
-            decoration: InputDecoration(hintText: "Enter Task Description"),
+            decoration: InputDecoration(
+              hintText: lang.enter_your_task_details,
+              hintStyle: TextStyle(
+                color: provider.isDark()
+                    ? Colors.white.withOpacity(0.6)
+                    : Colors.black.withOpacity(0.6),
+              ),
+            ),
             validator: (value) {
               if (value == null || value.trim().isEmpty) {
-                return "please enter task Description";
+                return "please enter task Details";
               }
               return null;
             },
           ),
           const SizedBox(height: 20),
-
           Text(
-            "Select Time",
+            lang.select_time,
             style: theme.textTheme.bodyLarge?.copyWith(
-              color: Colors.black,
-              fontWeight: FontWeight(500),
+              color: provider.isDark() ? Colors.white : Colors.black,
+              fontWeight: FontWeight.w500,
             ),
           ),
           const SizedBox(height: 10),
-          Text(
-            "20 Aug",
-            style: theme.textTheme.bodyLarge?.copyWith(
-              color: Colors.black,
-              fontWeight: FontWeight(500),
+          InkWell(
+            onTap: getSelectedDate,
+            child: Text(
+              DateFormat(
+                "dd MMM yyyy",
+                provider.currentLanguage,
+              ).format(selecteDate),
+              style: theme.textTheme.bodyLarge?.copyWith(
+                color: provider.isDark() ? Colors.white : Colors.black,
+                fontWeight: FontWeight.w500,
+              ),
+              textAlign: TextAlign.center,
             ),
-            textAlign: TextAlign.center,
           ),
-          Spacer(),
+          const Spacer(),
           FilledButton(
             onPressed: () {},
             style: FilledButton.styleFrom(backgroundColor: theme.primaryColor),
             child: Text(
-              "Save",
-              style: theme.textTheme.bodyMedium?.copyWith(color: Colors.white),
+              lang.save,
+              style: theme.textTheme.bodyMedium?.copyWith(
+                color: provider.isDark() ? Colors.white : Colors.black,
+              ),
             ),
           ),
         ],
       ),
     );
+  }
+
+  Future<void> getSelectedDate() async {
+    var currentDate = await showDatePicker(
+      context: context,
+      locale: Locale(provider.currentLanguage),
+      firstDate: DateTime.now(),
+      lastDate: DateTime.now().add(const Duration(days: 365)),
+    );
+    if (currentDate != null) {
+      setState(() {
+        selecteDate = currentDate;
+      });
+    }
   }
 }

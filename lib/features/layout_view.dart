@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:todo_app/core/setting_provider.dart';
 import 'package:todo_app/features/settings/settings_view.dart';
 import 'package:todo_app/features/tasks/tasks_view.dart';
 import 'package:todo_app/features/tasks/widgets/add_task_bottom_sheet.dart';
@@ -17,6 +19,8 @@ class _LayoutViewState extends State<LayoutView> {
   @override
   Widget build(BuildContext context) {
     var theme = Theme.of(context);
+    var provider = Provider.of<SettingProvider>(context);
+
     return Scaffold(
       body: screens[currentIndex],
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
@@ -40,7 +44,7 @@ class _LayoutViewState extends State<LayoutView> {
       ),
       bottomNavigationBar: BottomAppBar(
         padding: EdgeInsets.zero,
-        color: Colors.white,
+        color: provider.isDark() ? Color(0xFF141922) : Colors.white,
         shape: CircularNotchedRectangle(),
         notchMargin: 12,
         child: BottomNavigationBar(

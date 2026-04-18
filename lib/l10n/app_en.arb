@@ -1,0 +1,19 @@
+{
+  "@@locale": "en",
+  "to_do_list": "To Do List",
+  "done": "Done",
+  "add_new_task": "Add New Task",
+  "enter_your_task_title": "Enter Your Task Title",
+  "enter_your_task_details": "Enter Your Task Details",
+  "select_time": "Select Time",
+  "edit_task": "Edit Task",
+  "this_is_title": "This Is Title",
+  "task_details": "Task Details",
+  "save": "Save",
+  "save_changes": "Save Changes",
+  "settings": "Settings",
+  "light": "Light",
+  "dark": "Dark",
+  "language": "Language",
+  "theme_mode": "Mode"
+}

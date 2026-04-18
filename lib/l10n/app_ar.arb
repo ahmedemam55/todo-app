@@ -1,0 +1,19 @@
+{
+  "@@locale": "ar",
+  "to_do_list": "قائمة المهام",
+  "done": "تم",
+  "add_new_task": "إضافة مهمة جديدة",
+  "enter_your_task_title": "أدخل عنوان مهمتك",
+  "enter_your_task_details": "أدخل تفاصيل مهمتك",
+  "select_time": "حدد الوقت",
+  "edit_task": "تعديل المهمة",
+  "this_is_title": "هذا هو العنوان",
+  "task_details": "تفاصيل المهمة",
+  "save": "حفظ",
+  "save_changes": "حفظ التعديل",
+  "settings": "الإعدادات",
+  "light": "فاتح",
+  "dark": "داكن",
+  "language": "اللغة",
+  "theme_mode": "النمط"
+}
