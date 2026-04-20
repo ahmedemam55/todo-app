@@ -12,7 +12,7 @@ class AppLocalizationsAr extends AppLocalizations {
   String get to_do_list => 'قائمة المهام';
 
   @override
-  String get done => 'تم';
+  String get done => 'تم!';
 
   @override
   String get add_new_task => 'إضافة مهمة جديدة';

@@ -12,7 +12,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get to_do_list => 'To Do List';
 
   @override
-  String get done => 'Done';
+  String get done => 'Done!';
 
   @override
   String get add_new_task => 'Add New Task';

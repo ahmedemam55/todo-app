@@ -16,12 +16,6 @@ class SettingProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  String getBackGroundImage() {
-    return (currentThemeMode == ThemeMode.light)
-        ? "assets/images/default_bg.png"
-        : "assets/images/dark_bg.png";
-  }
-
   bool isDark() {
     return currentThemeMode == ThemeMode.dark;
   }

@@ -44,4 +44,15 @@ class FirebaseUtils {
           .toList(),
     );
   }
+
+  static Future<void> updateTaskIsDone(TaskModel taskModel) async {
+    var collectionRef = getCollectionRef();
+    taskModel.isDone = true;
+    return collectionRef.doc(taskModel.id).update(taskModel.toFirestore());
+  }
+
+  static Future<void> deleteTaskFromFirebase(TaskModel taskModel) async {
+    var collectionRef = getCollectionRef();
+    return collectionRef.doc(taskModel.id).delete();
+  }
 }

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:todo_app/core/page_route_names.dart';
+import 'package:todo_app/core/routes/page_route_names.dart';
 import 'package:todo_app/features/layout_view.dart';
 import 'package:todo_app/features/settings/settings_view.dart';
 import 'package:todo_app/features/splash/splash_view.dart';
