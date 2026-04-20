@@ -19,6 +19,30 @@ A professional Flutter task management application with Firebase integration, re
 
 ---
 
+## 📸 Screenshots
+Below are the app's screenshots that highlight its functionality:
+
+| Screen 1 | Screen 2 | Screen 3 | Screen 4 | Screen 5 | Screen 6 |
+| :---: | :---: | :---: | :---: | :---: | :---: | :---: |
+|<img width="412" height="870" alt="Image" src="https://github.com/user-attachments/assets/a2e93091-180e-4d69-9e22-bb77f695b280" />
+|<img width="412" height="870" alt="Image" src="https://github.com/user-attachments/assets/e10b47af-f1dc-4134-acd0-40caa3631396" />
+|<img width="412" height="870" alt="Image" src="https://github.com/user-attachments/assets/1861e3ef-3499-4865-a155-5a01fee149a3" />
+|<img width="412" height="870" alt="Image" src="https://github.com/user-attachments/assets/0d525120-142b-40e4-811a-19b3a1c0852e" />
+|<img width="412" height="870" alt="Image" src="https://github.com/user-attachments/assets/8398434f-8832-4061-bb2a-ddeda74788b9" />
+|<img width="412" height="870" alt="Image" src="https://github.com/user-attachments/assets/f2e197f6-1dbb-4585-b900-d053bdf49736" />
+|
+
+| Screen 7 | Screen 8 | Screen 9 | Screen 10 | Screen 11 | Screen 12 |
+| :---: | :---: | :---: | :---: | :---: | :---: | :---: |
+|<img width="412" height="870" alt="Image" src="https://github.com/user-attachments/assets/5dfd886d-927e-4685-b393-e95fc6c350b1" />
+|<img width="412" height="870" alt="Image" src="https://github.com/user-attachments/assets/f2a32e33-4503-4adf-9ce4-6c4a271d9ac4" />
+|<img width="412" height="870" alt="Image" src="https://github.com/user-attachments/assets/bf22cf00-27ea-4ce5-bdb9-05048aadf49b" />
+|<img width="412" height="870" alt="Image" src="https://github.com/user-attachments/assets/e66f0516-bc5e-4853-bafd-b9b91ef8212f" />
+|<img width="412" height="870" alt="Image" src="https://github.com/user-attachments/assets/8c3594c8-2b65-4818-bbed-e9d221661b35" />
+|<img width="412" height="870" alt="Image" src="https://github.com/user-attachments/assets/8522701d-750d-4c54-b1e0-fdd6e75d502d" />|
+
+---
+
 ## 🛠️ Tech Stack
 
 ### State Management
