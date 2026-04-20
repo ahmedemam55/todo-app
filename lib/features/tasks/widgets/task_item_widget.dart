@@ -82,8 +82,9 @@ class TaskItemWidget extends StatelessWidget {
                 SizedBox(height: 6),
                 Text(
                   taskModel.detail,
+                  maxLines: 3,
                   style: theme.textTheme.titleLarge?.copyWith(
-                    color: Colors.black,
+                    color: provider.isDark() ? Colors.white : Colors.black,
                     fontSize: 14,
                     fontWeight: FontWeight(500),
                   ),

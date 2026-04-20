@@ -24,7 +24,7 @@ class _SettingsViewState extends State<SettingsView> {
     return Column(
       children: [
         Padding(
-          padding: const EdgeInsets.only(bottom: 40.0),
+          padding: const EdgeInsets.only(bottom: 20.0),
           child: Container(
             padding: const EdgeInsets.only(top: 40, left: 15, right: 15),
             width: mediaQuery.size.width,
@@ -40,7 +40,7 @@ class _SettingsViewState extends State<SettingsView> {
           ),
         ),
         Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 25),
+          padding: const EdgeInsets.symmetric(horizontal: 12),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [

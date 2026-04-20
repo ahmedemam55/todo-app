@@ -180,18 +180,4 @@ class _AddTaskBottomSheetState extends State<AddTaskBottomSheet> {
       );
     });
   }
-
-  // Future<void> getSelectedDate() async {
-  //   var currentDate = await showDatePicker(
-  //     context: context,
-  //     locale: Locale(provider.currentLanguage),
-  //     firstDate: DateTime.now(),
-  //     lastDate: DateTime.now().add(const Duration(days: 365)),
-  //   );
-  //   if (currentDate != null) {
-  //     setState(() {
-  //       selecteDate = currentDate;
-  //     });
-  //   }
-  // }
 }
