@@ -1,6 +1,3 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:todo_app/core/utils.dart';
-
 class TaskModel {
   static const String collectionName = 'tasksCollection';
   String? id;
@@ -32,7 +29,7 @@ class TaskModel {
       'id': id,
       'title': title,
       'detail': detail,
-      'selectedDate': extractDate(selectedDate).millisecondsSinceEpoch,
+      'selectedDate': selectedDate.millisecondsSinceEpoch,
       'isDone': isDone,
     };
   }

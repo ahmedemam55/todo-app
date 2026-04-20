@@ -1,8 +1,8 @@
 import 'package:easy_date_timeline/easy_date_timeline.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:todo_app/core/firebase_utils.dart';
-import 'package:todo_app/core/setting_provider.dart';
+import 'package:todo_app/core/firebase_utils/firebase_utils.dart';
+import 'package:todo_app/core/settings_provider/setting_provider.dart';
 import 'package:todo_app/features/tasks/widgets/task_item_widget.dart';
 import 'package:todo_app/l10n/app_localizations.dart';
 import 'package:todo_app/model/task_model.dart';

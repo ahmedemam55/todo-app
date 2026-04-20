@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:todo_app/core/setting_provider.dart';
+import 'package:todo_app/core/settings_provider/setting_provider.dart';
 import 'package:todo_app/features/settings/settings_view.dart';
 import 'package:todo_app/features/tasks/tasks_view.dart';
 import 'package:todo_app/features/tasks/widgets/add_task_bottom_sheet.dart';

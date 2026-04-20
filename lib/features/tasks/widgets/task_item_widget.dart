@@ -98,10 +98,7 @@ class TaskItemWidget extends StatelessWidget {
                     ),
                     SizedBox(width: 5),
                     Text(
-                      DateFormat(
-                        'dd MMM yyyy',
-                        provider.currentLanguage,
-                      ).format(
+                      DateFormat('hh:mm a', provider.currentLanguage).format(
                         DateTime.fromMillisecondsSinceEpoch(
                           taskModel.selectedDate.millisecondsSinceEpoch,
                         ),

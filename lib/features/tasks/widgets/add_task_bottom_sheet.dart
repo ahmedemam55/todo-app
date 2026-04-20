@@ -2,11 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
-import 'package:todo_app/core/firebase_utils.dart';
+import 'package:todo_app/core/firebase_utils/firebase_utils.dart';
 import 'package:todo_app/core/services/snack_bar_services.dart';
-import 'package:todo_app/core/setting_provider.dart';
+import 'package:todo_app/core/settings_provider/setting_provider.dart';
 import 'package:todo_app/l10n/app_localizations.dart';
 import 'package:todo_app/model/task_model.dart';
+import 'package:todo_app/core/services/notification_service.dart';
 
 class AddTaskBottomSheet extends StatefulWidget {
   const AddTaskBottomSheet({super.key});
@@ -101,7 +102,7 @@ class _AddTaskBottomSheetState extends State<AddTaskBottomSheet> {
               onTap: getSelectedDate,
               child: Text(
                 DateFormat(
-                  "dd MMM yyyy",
+                  "dd MMM yyyy  hh:mm a",
                   provider.currentLanguage,
                 ).format(selecteDate),
                 style: theme.textTheme.bodyLarge?.copyWith(
@@ -122,6 +123,12 @@ class _AddTaskBottomSheetState extends State<AddTaskBottomSheet> {
                   );
                   EasyLoading.show();
                   FirebaseUtils.addTaskToFirebase(taskModel).then((value) {
+                    NotificationService.scheduleNotification(
+                      id: taskModel.id.hashCode,
+                      title: taskModel.title,
+                      body: taskModel.detail,
+                      scheduledDate: taskModel.selectedDate,
+                    );
                     Navigator.pop(context);
                     EasyLoading.dismiss();
                     SnackBarServices.showSuccessMessage(
@@ -147,16 +154,44 @@ class _AddTaskBottomSheetState extends State<AddTaskBottomSheet> {
   }
 
   Future<void> getSelectedDate() async {
+    // ── 1. اختار اليوم ────────────────────────────────────────────────────
     var currentDate = await showDatePicker(
       context: context,
       locale: Locale(provider.currentLanguage),
       firstDate: DateTime.now(),
       lastDate: DateTime.now().add(const Duration(days: 365)),
     );
-    if (currentDate != null) {
-      setState(() {
-        selecteDate = currentDate;
-      });
-    }
+    if (currentDate == null) return;
+
+    // ── 2. اختار الوقت ───────────────────────────────────────────────────
+    var currentTime = await showTimePicker(
+      context: context,
+      initialTime: TimeOfDay.now(),
+    );
+    if (currentTime == null) return;
+
+    setState(() {
+      selecteDate = DateTime(
+        currentDate.year,
+        currentDate.month,
+        currentDate.day,
+        currentTime.hour,
+        currentTime.minute,
+      );
+    });
   }
+
+  // Future<void> getSelectedDate() async {
+  //   var currentDate = await showDatePicker(
+  //     context: context,
+  //     locale: Locale(provider.currentLanguage),
+  //     firstDate: DateTime.now(),
+  //     lastDate: DateTime.now().add(const Duration(days: 365)),
+  //   );
+  //   if (currentDate != null) {
+  //     setState(() {
+  //       selecteDate = currentDate;
+  //     });
+  //   }
+  // }
 }
